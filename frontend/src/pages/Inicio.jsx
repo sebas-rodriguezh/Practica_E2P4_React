@@ -2,6 +2,7 @@ function Inicio() {
     return (
         <div style={styles.contenedor}>
             <h2 style={styles.texto}>Bienvenido al conocimiento...</h2>
+            {/* Acá podríamos poner un texto y abajo una imagen para ver como se maneja eso en React. */}
         </div>
     );
 }
