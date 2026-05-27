@@ -1,4 +1,3 @@
-// src/App.jsx
 import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
@@ -13,9 +12,10 @@ function App() {
 
     return (
         <BrowserRouter>
-            <div className="d-flex flex-column min-vh-100 bg-light">
+            <div>
                 <Navbar usuario={usuario} setUsuario={setUsuario} />
-                <main className="flex-grow-1">
+
+                <main className="container mt-4" style={{ minHeight: '80vh' }}>
                     <Routes>
                         <Route path="/" element={<Inicio />} />
                         <Route

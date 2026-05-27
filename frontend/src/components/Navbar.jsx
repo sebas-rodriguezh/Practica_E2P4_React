@@ -1,4 +1,3 @@
-// src/components/Navbar.jsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import LoginModal from "./LoginModal";
@@ -12,27 +11,24 @@ function Navbar({ usuario, setUsuario }) {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+            <nav className="navbar navbar-dark bg-dark">
                 <div className="container">
-                    <span className="navbar-brand fw-bold">🌐 Sistema de Autoevaluación</span>
+                    <Link to="/" className="navbar-brand">Sistema de Autoevaluación</Link>
 
-                    <div className="d-flex align-items-center">
-                        <Link to="/" className="nav-link text-white me-3">Inicio</Link>
+                    <div>
+                        <Link to="/" className="text-white me-3 text-decoration-none">Inicio</Link>
 
                         {usuario ? (
                             <>
-                                <Link to="/questions" className="nav-link text-white me-3">Preguntas</Link>
-                                <Link to="/xxx" className="nav-link text-white me-3">Página XXX</Link>
-                                <Link to="/yyy" className="nav-link text-white me-3">Página YYY</Link>
-                                <button className="btn btn-outline-light btn-sm ms-2" onClick={cerrarSesion}>
-                                    👤 {usuario.username} (Salir)
+                                <Link to="/questions" className="text-white me-3 text-decoration-none">Preguntas</Link>
+                                <Link to="/xxx" className="text-white me-3 text-decoration-none">Página XXX</Link>
+                                <Link to="/yyy" className="text-white me-3 text-decoration-none">Página YYY</Link>
+                                <button className="btn btn-secondary btn-sm" onClick={cerrarSesion}>
+                                    Salir ({usuario.username})
                                 </button>
                             </>
                         ) : (
-                            <button
-                                className="btn btn-primary btn-sm ms-2"
-                                onClick={() => setMostrarLogin(true)}
-                            >
+                            <button className="btn btn-light btn-sm" onClick={() => setMostrarLogin(true)}>
                                 Iniciar Sesión
                             </button>
                         )}
@@ -41,10 +37,7 @@ function Navbar({ usuario, setUsuario }) {
             </nav>
 
             {mostrarLogin && (
-                <LoginModal
-                    setUsuario={setUsuario}
-                    cerrar={() => setMostrarLogin(false)}
-                />
+                <LoginModal setUsuario={setUsuario} cerrar={() => setMostrarLogin(false)} />
             )}
         </>
     );

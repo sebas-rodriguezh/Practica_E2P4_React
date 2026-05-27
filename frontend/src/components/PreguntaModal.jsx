@@ -45,37 +45,34 @@ function PreguntaModal({ pregunta, usuario, cerrar, onRespondida }) {
 
     return (
         <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-             style={{ backgroundColor: "rgba(0,0,0,0.5)", zIndex: 1050 }}>
-            <div className="card shadow-lg" style={{ width: "400px" }}>
-                <div className="card-body">
-                    <h5 className="card-title text-primary mb-3">Responde la pregunta:</h5>
-                    <p className="fw-bold mb-4">{pregunta.pregunta}</p>
+             style={{ backgroundColor: "rgba(0,0,0,0.4)" }}>
 
-                    <div className="mb-4">
-                        {opciones.map((op) => (
-                            <div key={op.id} className="form-check mb-2 border rounded p-2 bg-light">
-                                <input
-                                    className="form-check-input ms-1"
-                                    type="radio"
-                                    name="opcion"
-                                    id={`opcion-${op.id}`}
-                                    value={op.id}
-                                    checked={seleccionada === op.id}
-                                    onChange={() => setSeleccionada(op.id)}
-                                />
-                                <label className="form-check-label ms-2 w-100 cursor-pointer" htmlFor={`opcion-${op.id}`}>
-                                    {op.texto}
-                                </label>
-                            </div>
-                        ))}
-                    </div>
+            <div className="bg-white p-4 border rounded" style={{ width: "400px" }}>
+                <h6>{pregunta.pregunta}</h6>
 
-                    {error && <div className="alert alert-danger py-2 mb-3">{error}</div>}
+                <div className="mb-3">
+                    {opciones.map((op) => (
+                        <div key={op.id}>
+                            <input
+                                type="radio"
+                                name="opcion"
+                                id={`opcion-${op.id}`}
+                                value={op.id}
+                                checked={seleccionada === op.id}
+                                onChange={() => setSeleccionada(op.id)}
+                            />
+                            <label htmlFor={`opcion-${op.id}`} className="ms-2">
+                                {op.texto}
+                            </label>
+                        </div>
+                    ))}
+                </div>
 
-                    <div className="d-flex justify-content-end gap-2">
-                        <button className="btn btn-secondary" onClick={cerrar}>Cancelar</button>
-                        <button className="btn btn-success" onClick={handleRegistrar}>Registrar</button>
-                    </div>
+                {error && <p className="text-danger">{error}</p>}
+
+                <div>
+                    <button className="btn btn-success btn-sm me-2" onClick={handleRegistrar}>Registrar</button>
+                    <button className="btn btn-secondary btn-sm" onClick={cerrar}>Cancelar</button>
                 </div>
             </div>
         </div>

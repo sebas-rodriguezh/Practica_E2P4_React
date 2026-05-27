@@ -44,75 +44,56 @@ function Preguntas({ usuario }) {
     }
 
     return (
-        <div className="container mt-4">
-            <div className="row mb-4 align-items-end">
-                <div className="col-md-5">
-                    <label className="form-label fw-bold">Tópico:</label>
-                    <div className="input-group">
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Ej. Prog. Languages"
-                            value={topico}
-                            onChange={(e) => setTopico(e.target.value)}
-                            onKeyDown={(e) => e.key === "Enter" && buscar()}
-                        />
-                        <button className="btn btn-primary" onClick={buscar}>Buscar</button>
-                    </div>
+        <div>
+            <h4>Preguntas de Autoevaluación</h4>
+            <div className="mb-3 d-flex justify-content-between align-items-center">
+                <div>
+                    <label className="me-2">Tópico:</label>
+                    <input
+                        type="text"
+                        value={topico}
+                        onChange={(e) => setTopico(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && buscar()}
+                    />
+                    <button className="btn btn-primary btn-sm ms-2" onClick={buscar}>Buscar</button>
                 </div>
-                <div className="col-md-7 text-md-end mt-3 mt-md-0">
-                    <div className="p-2 bg-white border rounded shadow-sm d-inline-block">
-                        <span className="me-3">✅ Aciertos: <span className="badge bg-success">{estadisticas.aciertos}</span></span>
-                        <span className="me-3">🔴 Fallos: <span className="badge bg-danger">{estadisticas.fallos}</span></span>
-                        <span className="fw-bold">NOTA: <span className="badge bg-info text-dark">{estadisticas.nota}</span></span>
-                    </div>
+                <div>
+                    <strong>Estadísticas:</strong> Aciertos: {estadisticas.aciertos} | Fallos: {estadisticas.fallos} | Nota: {estadisticas.nota}
                 </div>
             </div>
-
-            <div className="card shadow-sm">
-                <div className="card-body p-0">
-                    {!buscado ? (
-                        <div className="p-4 text-center text-muted">
-                            <em>No hay datos que mostrar, ejecute una búsqueda con un tópico adecuado.</em>
-                        </div>
-                    ) : preguntas.length === 0 ? (
-                        <div className="p-4 text-center text-danger">
-                            No se encontraron preguntas disponibles para este tópico.
-                        </div>
-                    ) : (
-                        <div className="table-responsive">
-                            <table className="table table-striped table-hover mb-0">
-                                <thead className="table-dark">
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Pregunta</th>
-                                    <th>Tópico</th>
-                                    <th className="text-center">Acción</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {preguntas.map((p) => (
-                                    <tr key={p.id}>
-                                        <td className="align-middle">{p.id}</td>
-                                        <td className="align-middle">{p.pregunta}</td>
-                                        <td className="align-middle">{p.topico}</td>
-                                        <td className="text-center align-middle">
-                                            <button
-                                                className="btn btn-outline-secondary btn-sm"
-                                                onClick={() => setPreguntaActiva(p)}
-                                                title="Responder"
-                                            >
-                                                ✏️ Responder
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
-                </div>
-            </div>
+            {!buscado ? (
+                <p>Realice una búsqueda por tópico.</p>
+            ) : preguntas.length === 0 ? (
+                <p>No se encontraron resultados.</p>
+            ) : (
+                <table className="table table-bordered">
+                    <thead>
+                    <tr className="table-light">
+                        <th>ID</th>
+                        <th>Pregunta</th>
+                        <th>Tópico</th>
+                        <th>Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {preguntas.map((p) => (
+                        <tr key={p.id}>
+                            <td>{p.id}</td>
+                            <td>{p.pregunta}</td>
+                            <td>{p.topico}</td>
+                            <td>
+                                <button
+                                    className="btn btn-sm btn-outline-primary"
+                                    onClick={() => setPreguntaActiva(p)}
+                                >
+                                    Responder
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            )}
 
             {preguntaActiva && (
                 <PreguntaModal
