@@ -28,87 +28,43 @@ function LoginModal({ setUsuario, cerrar }) {
     }
 
     return (
-        <div style={styles.overlay}>
-            <div style={styles.modal}>
-                <h4 style={styles.titulo}>Login</h4>
+        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+             style={{ backgroundColor: "rgba(0,0,0,0.5)", zIndex: 1050 }}>
+            <div className="card shadow-lg" style={{ width: "320px" }}>
+                <div className="card-body">
+                    <h4 className="card-title text-center mb-4">Iniciar Sesión</h4>
 
-                <div style={styles.campo}>
-                    <label style={styles.label}>Usuario</label>
-                    <input
-                        style={styles.input}
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
+                    <div className="mb-3">
+                        <label className="form-label">Usuario</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="mb-3">
+                        <label className="form-label">Clave</label>
+                        <input
+                            type="password"
+                            className="form-control"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+                        />
+                    </div>
+
+                    {error && <div className="alert alert-danger py-2 mb-3" role="alert">{error}</div>}
+
+                    <div className="d-grid gap-2 mt-4">
+                        <button className="btn btn-primary" onClick={handleLogin}>Ingresar</button>
+                        <button className="btn btn-secondary" onClick={cerrar}>Cancelar</button>
+                    </div>
                 </div>
-
-                <div style={styles.campo}>
-                    <label style={styles.label}>Clave</label>
-                    <input
-                        style={styles.input}
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-                    />
-                </div>
-
-                {error && <p style={styles.error}>{error}</p>}
-
-                <button style={styles.btn} onClick={handleLogin}>Ingresar</button>
             </div>
         </div>
     );
 }
-
-const styles = {
-    overlay: {
-        position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
-        backgroundColor: "rgba(0,0,0,0.4)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        zIndex: 1000,
-    },
-    modal: {
-        backgroundColor: "#fff",
-        padding: "24px",
-        borderRadius: "6px",
-        width: "260px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-    },
-    titulo: {
-        margin: "0 0 16px 0",
-        fontSize: "16px",
-    },
-    campo: {
-        marginBottom: "12px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "4px",
-    },
-    label: {
-        fontSize: "13px",
-        color: "#555",
-    },
-    input: {
-        padding: "5px 8px",
-        border: "1px solid #ccc",
-        borderRadius: "4px",
-        fontSize: "13px",
-    },
-    error: {
-        color: "red",
-        fontSize: "12px",
-        margin: "0 0 8px 0",
-    },
-    btn: {
-        width: "100%",
-        padding: "7px",
-        backgroundColor: "#4a90d9",
-        color: "#fff",
-        border: "none",
-        borderRadius: "4px",
-        cursor: "pointer",
-        fontSize: "13px",
-    },
-};
 
 export default LoginModal;

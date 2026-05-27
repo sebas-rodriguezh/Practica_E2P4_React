@@ -17,7 +17,7 @@ function Preguntas({ usuario }) {
             .then((r) => r.json())
             .then(setEstadisticas)
             .catch(() => {});
-    }, [usuario.token]);
+    }, [usuario.token, headers]);
 
     useEffect(() => {
         cargarEstadisticas();
@@ -44,65 +44,76 @@ function Preguntas({ usuario }) {
     }
 
     return (
-        <div style={styles.pagina}>
-
-            {/* Barra de búsqueda y estadísticas */}
-            <div style={styles.barra}>
-                <label style={styles.label}>Tópico:</label>
-                <input
-                    style={styles.input}
-                    value={topico}
-                    onChange={(e) => setTopico(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && buscar()}
-                />
-                <button style={styles.btnBuscar} onClick={buscar}>Buscar</button>
-
-                <span style={styles.stats}>
-          Estadísticas: {estadisticas.aciertos} ✅ &nbsp;
-                    {estadisticas.fallos} 🔴 &nbsp;
-                    NOTA: {estadisticas.nota}
-        </span>
+        <div className="container mt-4">
+            <div className="row mb-4 align-items-end">
+                <div className="col-md-5">
+                    <label className="form-label fw-bold">Tópico:</label>
+                    <div className="input-group">
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Ej. Prog. Languages"
+                            value={topico}
+                            onChange={(e) => setTopico(e.target.value)}
+                            onKeyDown={(e) => e.key === "Enter" && buscar()}
+                        />
+                        <button className="btn btn-primary" onClick={buscar}>Buscar</button>
+                    </div>
+                </div>
+                <div className="col-md-7 text-md-end mt-3 mt-md-0">
+                    <div className="p-2 bg-white border rounded shadow-sm d-inline-block">
+                        <span className="me-3">✅ Aciertos: <span className="badge bg-success">{estadisticas.aciertos}</span></span>
+                        <span className="me-3">🔴 Fallos: <span className="badge bg-danger">{estadisticas.fallos}</span></span>
+                        <span className="fw-bold">NOTA: <span className="badge bg-info text-dark">{estadisticas.nota}</span></span>
+                    </div>
+                </div>
             </div>
 
-            {/* Tabla de resultados */}
-            {!buscado ? (
-                <p style={styles.mensaje}>
-                    No hay datos que mostrar, ejecute una búsqueda con un tópico adecuado
-                </p>
-            ) : preguntas.length === 0 ? (
-                <p style={styles.mensaje}>No se encontraron preguntas disponibles</p>
-            ) : (
-                <table style={styles.tabla}>
-                    <thead>
-                    <tr>
-                        <th style={styles.th}>Id</th>
-                        <th style={styles.th}>Pregunta</th>
-                        <th style={styles.th}>Tópico</th>
-                        <th style={styles.th}>...</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {preguntas.map((p) => (
-                        <tr key={p.id} style={styles.tr}>
-                            <td style={styles.td}>{p.id}</td>
-                            <td style={styles.td}>{p.pregunta}</td>
-                            <td style={styles.td}>{p.topico}</td>
-                            <td style={styles.td}>
-                  <span
-                      style={styles.icono}
-                      onClick={() => setPreguntaActiva(p)}
-                      title="Responder"
-                  >
-                    ✏️
-                  </span>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-            )}
+            <div className="card shadow-sm">
+                <div className="card-body p-0">
+                    {!buscado ? (
+                        <div className="p-4 text-center text-muted">
+                            <em>No hay datos que mostrar, ejecute una búsqueda con un tópico adecuado.</em>
+                        </div>
+                    ) : preguntas.length === 0 ? (
+                        <div className="p-4 text-center text-danger">
+                            No se encontraron preguntas disponibles para este tópico.
+                        </div>
+                    ) : (
+                        <div className="table-responsive">
+                            <table className="table table-striped table-hover mb-0">
+                                <thead className="table-dark">
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Pregunta</th>
+                                    <th>Tópico</th>
+                                    <th className="text-center">Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {preguntas.map((p) => (
+                                    <tr key={p.id}>
+                                        <td className="align-middle">{p.id}</td>
+                                        <td className="align-middle">{p.pregunta}</td>
+                                        <td className="align-middle">{p.topico}</td>
+                                        <td className="text-center align-middle">
+                                            <button
+                                                className="btn btn-outline-secondary btn-sm"
+                                                onClick={() => setPreguntaActiva(p)}
+                                                title="Responder"
+                                            >
+                                                ✏️ Responder
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
+            </div>
 
-            {/* Popup de pregunta */}
             {preguntaActiva && (
                 <PreguntaModal
                     pregunta={preguntaActiva}
@@ -114,71 +125,5 @@ function Preguntas({ usuario }) {
         </div>
     );
 }
-
-const styles = {
-    pagina: {
-        padding: "20px",
-        maxWidth: "800px",
-        margin: "0 auto",
-    },
-    barra: {
-        display: "flex",
-        alignItems: "center",
-        gap: "8px",
-        marginBottom: "16px",
-        flexWrap: "wrap",
-    },
-    label: {
-        fontSize: "13px",
-    },
-    input: {
-        padding: "4px 8px",
-        border: "1px solid #ccc",
-        borderRadius: "4px",
-        fontSize: "13px",
-        width: "160px",
-    },
-    btnBuscar: {
-        padding: "4px 12px",
-        backgroundColor: "#4a90d9",
-        color: "#fff",
-        border: "none",
-        borderRadius: "4px",
-        cursor: "pointer",
-        fontSize: "13px",
-    },
-    stats: {
-        fontSize: "13px",
-        marginLeft: "8px",
-    },
-    mensaje: {
-        color: "#c00",
-        fontSize: "13px",
-        fontStyle: "italic",
-    },
-    tabla: {
-        width: "100%",
-        borderCollapse: "collapse",
-        fontSize: "13px",
-    },
-    th: {
-        backgroundColor: "#3a6ea5",
-        color: "#fff",
-        padding: "6px 10px",
-        textAlign: "left",
-        border: "1px solid #ccc",
-    },
-    tr: {
-        backgroundColor: "#dce9f8",
-    },
-    td: {
-        padding: "5px 10px",
-        border: "1px solid #ccc",
-    },
-    icono: {
-        cursor: "pointer",
-        fontSize: "14px",
-    },
-};
 
 export default Preguntas;
